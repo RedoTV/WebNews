@@ -3,7 +3,7 @@ using WebNews.Client.Models;
 
 namespace WebNews.Client.Services;
 
-public class NewsService
+public class NewsService : INewsService
 {
     private readonly HttpClient _httpClient;
 

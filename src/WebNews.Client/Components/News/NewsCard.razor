@@ -1,0 +1,33 @@
+@using WebNews.Client.Models
+
+<div class="news-card">
+    @if (!string.IsNullOrEmpty(NewsArticle.ImageUrl))
+    {
+        <img src="@NewsArticle.ImageUrl" alt="@NewsArticle.Title" class="news-image" />
+    }
+    <div>
+        <div class="news-content">
+            <h2>@NewsArticle.Title</h2>
+            <p>@NewsArticle.Description</p>
+            <div class="news-meta">
+                <span>
+                    <i class="bi bi-newspaper"></i>
+                    @NewsArticle.SourceName
+                </span>
+                <span>
+                    <i class="bi bi-clock"></i>
+                    @NewsArticle.PubDate
+                </span>
+            </div>
+            <a href="@NewsArticle.Link" target="_blank" class="btn btn-primary w-100">
+                <i class="bi bi-arrow-right-circle me-2"></i>
+                Читать далее
+            </a>
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public NewsArticle NewsArticle { get; set; } = default!;
+} 

@@ -1,10 +1,11 @@
 @page "/news"
 @using WebNews.Client.Models
 @using WebNews.Client.Services
-@inject NewsService NewsService
+@using WebNews.Client.Components.News
+@inject INewsService _newsService
 
 <PageTitle>Новости</PageTitle>
-
+    
 <div class="container">
     <h1 class="mb-4">Последние новости</h1>
 
@@ -22,30 +23,7 @@
         <div class="news-container">
             @foreach (var article in news.Results)
             {
-                <div class="news-card">
-                    @if (!string.IsNullOrEmpty(article.ImageUrl))
-                    {
-                        <img src="@article.ImageUrl" alt="@article.Title" class="news-image" />
-                    }
-                    <div class="news-content">
-                        <h2>@article.Title</h2>
-                        <p>@article.Description</p>
-                        <div class="news-meta">
-                            <span>
-                                <i class="bi bi-newspaper"></i>
-                                @article.SourceName
-                            </span>
-                            <span>
-                                <i class="bi bi-clock"></i>
-                                @article.PubDate
-                            </span>
-                        </div>
-                        <a href="@article.Link" target="_blank" class="btn btn-primary w-100">
-                            <i class="bi bi-arrow-right-circle me-2"></i>
-                            Читать далее
-                        </a>
-                    </div>
-                </div>
+                <NewsCard NewsArticle="@article" />
             }
         </div>
 
@@ -64,14 +42,14 @@
 
     protected override async Task OnInitializedAsync()
     {
-        news = await NewsService.GetCachedNewsAsync();
+        news = await _newsService.GetCachedNewsAsync();
     }
 
     private async Task LoadMore()
     {
         if (!string.IsNullOrEmpty(news?.NextPage))
         {
-            var moreNews = await NewsService.GetLatestNewsAsync(news.NextPage);
+            var moreNews = await _newsService.GetLatestNewsAsync(news.NextPage);
             news.Results.AddRange(moreNews.Results);
             news.NextPage = moreNews.NextPage;
         }
